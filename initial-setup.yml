@@ -7,17 +7,36 @@
         update_cache: yes
         cache_valid_time: 3600
         upgrade: full
-    - name: Generate SSH Key Pair
-      community.crypto.openssh_keypair:
+    - name: Generate SSH key pair
+      openssh_keypair:
         type: ed25519
-        path: /home/derrick/.ssh/id_ed25519
+        path: /home/{{ ansible_user }}/.ssh/id_ed25519
         state: present
-    - name: Download Packages
+    - name: Download packages
       apt:
         pkg:
           - vim
           - docker
           - docker-compose
+          - inxi
+          - screenfetch
+    - name: Disable all current default MOTDs daemon scripts
+      file:
+        path: /etc/update-motd.d
+        state: directory
+        recurse: yes
+        mode: -x
+    - name: Add MOTD Banner script
+      template:
+        src: 01-custom.j2
+        dest: /etc/update-motd.d/01-custom
+        owner: root
+        group: root
+        mode: 0644
+    - name: Make MOTD Banner script executable
+      file:
+        path: /etc/update-motd.d/01-custom
+        mode: +x
     - name: Reboot after Initial Setup
       reboot:
         reboot_timeout: 3600
