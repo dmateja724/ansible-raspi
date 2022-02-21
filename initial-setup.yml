@@ -1,0 +1,23 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Update & Upgrade Packages
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+        upgrade: full
+    - name: Generate SSH Key Pair
+      community.crypto.openssh_keypair:
+        type: ed25519
+        path: /home/derrick/.ssh/id_ed25519
+        state: present
+    - name: Download Packages
+      apt:
+        pkg:
+          - vim
+          - docker
+          - docker-compose
+    - name: Reboot after Initial Setup
+      reboot:
+        reboot_timeout: 3600
