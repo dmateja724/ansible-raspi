@@ -37,6 +37,18 @@
       file:
         path: /etc/update-motd.d/01-custom
         mode: +x
+    - name: Create Prometheus directory
+      file:
+        path: /etc/prometheus
+        state: directory
+        mode: '0755'
+    - name: Add Prometheus config
+      template:
+        src: prometheus.yml.j2
+        dest: /etc/prometheus/prometheus.yml
+        owner: root
+        group: root
+        mode: 0644
     - name: Reboot after Initial Setup
       reboot:
         reboot_timeout: 3600
