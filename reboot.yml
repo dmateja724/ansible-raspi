@@ -2,6 +2,6 @@
 - hosts: all
   become: true
   tasks:
-    - name: Reboot after Initial Setup
+    - name: Reboot
       reboot:
         reboot_timeout: 3600
