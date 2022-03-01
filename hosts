@@ -1,6 +1,8 @@
-[pi]
-192.168.1.40
-192.168.1.41
+[raspis]
+raspi1
+raspi2
+raspi3
+raspi4
 
-[pi:vars]
+[raspis:vars]
 ansible_user=derrick
