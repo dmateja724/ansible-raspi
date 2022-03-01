@@ -20,6 +20,11 @@
           - docker-compose
           - inxi
           - screenfetch
+    - name: Add {{ ansible_user }} to Docker group
+      user:
+        name: '{{ ansible_user }}'
+        groups: docker
+        append: yes 
     - name: Disable all current default MOTDs daemon scripts
       file:
         path: /etc/update-motd.d
